@@ -1,0 +1,59 @@
+﻿@page
+@model Practica_II.Pages.NominaModel
+@{
+    NominaModel empleadosNomina = new NominaModel();
+    IEnumerable<Empleados> empleados = from empleado in empleadosNomina.listaEmpleados orderby empleado.Nombre select empleado;
+    Empleados emp = new Empleados();
+    Descuentos d = new Descuentos();
+}
+
+<h3>Nomina de Empleados</h3>
+<body>
+    <style>
+        .leyenda {
+            text-align: right;
+        }
+        h3{
+            text-align:center;
+            color:cadetblue;
+        }
+    </style>
+    <div class="leyenda"><strong>• Desc </strong>= descuento</div>
+    <div class="leyenda"><strong>• AFP </strong>= 2.87%</div>
+    <div class="leyenda"><strong>• ARS </strong>= 3.04%</div>
+    <table class="container mt-5 table-bordered table-striped">
+
+        <thead class="table-dark text-light">
+            @* nombres, apellidos, cargo, salario mensual, descuento AFP, descuento ARS, descuento ISR, total de descuentos y Salario Neto. *@
+            <tr class="text-center">
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Cargo</th>
+                <th>Salario Bruto</th>
+                <th>Desc. AFP</th>
+                <th>Desc. ARS</th>
+                <th>Desc. ISR</th>
+                <th>Desc. Total</th>
+                <th>Salario Neto.</th>
+            </tr>
+        </thead>
+        <tbody>
+                @foreach (Empleados e in empleados)
+                {
+            <tr class=" text-center">
+                <td>@e.Nombre</td>
+                <td>@e.Apellido</td>
+                <td>@e.Cargo</td>
+                <td>RD$ @e.Salario</td>
+                <td>RD$ @d.descAFP(e.Salario)</td>
+                <td>RD$ @d.descARS(e.Salario)</td>
+                <td>RD$@d.calcularISR(e.Salario)</td>
+                <td>RD$ @d.descuentoTotal(e.Salario)</td>
+                <td>RD$ @(e.Salario-d.descuentoTotal(e.Salario))</td>
+            </tr>
+                    
+                }
+                
+        </tbody>
+    </table>
+</body>
